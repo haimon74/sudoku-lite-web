@@ -93,6 +93,8 @@
     transition: all 0.2s;
     user-select: none;
     font-weight: bold;
+    border: none;
+    box-sizing: border-box;
 }
 
 .cellSpan {
@@ -114,6 +116,7 @@
 
 .selected {
     background-color: #e3f2fd;
+    box-shadow: 0 0 0 3px orange, 0 0 0 6px #ffa72633;
 }
 
 .highlighted {
@@ -147,7 +150,7 @@
 }
 
 .wrong {
-    background-color: #ffebee;
+    background-color: salmon !important;
 }
 
 .numberPad {

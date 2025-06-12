@@ -13,6 +13,7 @@ interface CellProps {
     isError: boolean;
     variant: GameVariant;
     onClick: () => void;
+    showHints: boolean;
 }
 
 // Utility for combining class names
@@ -20,14 +21,15 @@ function cn(...args: (string | false | undefined)[]) {
     return args.filter(Boolean).join(' ');
 }
 
-const Cell: React.FC<CellProps> = ({ value, isInitial, isSelected, isHighlighted, isError, variant, onClick }) => {
+const Cell: React.FC<CellProps> = ({ value, isInitial, isSelected, isHighlighted, isError, variant, onClick, showHints }) => {
     const hebrewChar = getHebrewChar(value, variant);
     const cellClass = cn(
         styles.cell,
         isInitial && styles.initial,
         isSelected && styles.selected,
         isHighlighted && styles.highlighted,
-        isError && styles.error
+        isError && showHints && styles.error,
+        isError && showHints && styles.wrong
     );
     return (
         <div className={cellClass} onClick={onClick}>
@@ -206,12 +208,12 @@ const SudokuBoard: React.FC = () => {
                         }}
                         className={styles.controlSelect}
                     >
-                        <option value="easy">Easy</option>
-                        <option value="medium">Medium</option>
-                        <option value="hard">Hard</option>
-                    </select>
+                    <option value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
+                </select>
                 
-                    <button
+                <button 
                         onClick={() => setShowHints(!showHints)}
                         className={styles.controlGroupButton}
                         style={{
@@ -232,7 +234,7 @@ const SudokuBoard: React.FC = () => {
                         title={showHints ? 'Hide Hints' : 'Show Hints'}
                     >
                         <LightBulbIcon on={showHints} />
-                    </button>
+                </button>
                     <button onClick={startNewGame} title="Start new game" className={styles.controlGroupButton}>New</button>
                     <div className={styles.timer}>{formatTime(timer)}</div>
                 </div>
@@ -247,22 +249,23 @@ const SudokuBoard: React.FC = () => {
             >
                 {board.map((row, i) => (
                     row.map((cell, j) => (
-                        <Cell
+                            <Cell
                             key={`${i}-${j}`}
-                            value={cell}
+                                value={cell}
                             isInitial={initialBoard[i][j] !== 0}
                             isSelected={selectedCell?.[0] === i && selectedCell?.[1] === j}
                             isHighlighted={isCellHighlighted(i, j)}
                             isError={isCellError(i, j)}
                             variant={gameVariant}
                             onClick={() => handleCellClick(i, j)}
+                            showHints={showHints}
                         />
                     ))
                 ))}
             </div>
             <div 
                 className={styles.numberPad} 
-                style={{ gridTemplateColumns: `repeat(${boardSize}, 1fr)` }}
+                style={{ gridTemplateColumns: `repeat(${boardSize+1}, 1fr)` }}
                 data-cols={boardSize}
             >
                 {getHebrewChars(boardSize, gameVariant).map((hebrewChar) => (
@@ -285,6 +288,25 @@ const SudokuBoard: React.FC = () => {
                         {hebrewChar.char}
                     </button>
                 ))}
+                <button
+                    key="clear"
+                    onClick={() => {
+                        if (selectedCell) {
+                            const [row, col] = selectedCell;
+                            if (initialBoard[row][col] === 0) {
+                                const newBoard = boardCopy(board);
+                                newBoard[row][col] = 0;
+                                setBoard(newBoard);
+                                validateBoard(newBoard);
+                            }
+                        }
+                    }}
+                    className={styles.numberButton}
+                    style={{ color: '#888' }}
+                    title="Clear cell"
+                >
+                    ×
+                </button>
             </div>
         </div>
     );
