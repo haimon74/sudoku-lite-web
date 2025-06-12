@@ -200,8 +200,7 @@ const SudokuBoard: React.FC = () => {
                         <option value="medium">Medium</option>
                         <option value="hard">Hard</option>
                     </select>
-                </div>
-                <div className="control-group">
+                
                     <button
                         onClick={() => setShowHints(!showHints)}
                         style={{
