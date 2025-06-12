@@ -33,7 +33,7 @@
     border-radius: 4px;
     background-color: white;
     font-size: 1rem;
-    min-width: 120px;
+    /* min-width: 120px; */
     cursor: pointer;
     transition: all 0.2s;
 }
@@ -58,7 +58,7 @@
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.2s;
-    min-width: 120px;
+    min-width: 60px;
 }
 
 .control-group button:hover {

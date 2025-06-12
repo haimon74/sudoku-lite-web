@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { SudokuBoard as BoardType, generateBoard, removeNumbers, isBoardValid, boardCopy } from '../utils/sudoku';
-import { BoardSize, GameVariant, getHebrewChars, getHebrewChar, getValueFromChar, HebrewChar } from '../utils/hebrewChars';
+import { SudokuBoard as BoardType, generateBoard, removeNumbers, boardCopy } from '../utils/sudoku';
+import { BoardSize, GameVariant, getHebrewChars, getHebrewChar } from '../utils/hebrewChars';
 import './SudokuBoard.css';
 
 type Difficulty = 'easy' | 'medium' | 'hard';
@@ -29,6 +29,22 @@ const Cell: React.FC<CellProps> = ({ value, isInitial, isSelected, isHighlighted
         </div>
     );
 };
+
+// Light bulb icon for hints
+const LightBulbIcon: React.FC<{ on: boolean }> = ({ on }) => (
+    <span
+        role="img"
+        aria-label={on ? 'Hints On' : 'Hints Off'}
+        style={{
+            color: on ? '#FFD600' : '#BDBDBD',
+            fontSize: '1.5em',
+            verticalAlign: 'middle',
+            transition: 'color 0.2s',
+        }}
+    >
+        💡
+    </span>
+);
 
 const SudokuBoard: React.FC = () => {
     const [board, setBoard] = useState<BoardType>([]);
@@ -72,6 +88,37 @@ const SudokuBoard: React.FC = () => {
         setSelectedCell([row, col]);
     };
 
+    const validateBoard = useCallback((currentBoard: BoardType) => {
+        const newErrors = new Set<string>();
+        // Check rows
+        for (let i = 0; i < boardSize; i++) {
+            const row = new Set<number>();
+            for (let j = 0; j < boardSize; j++) {
+                const value = currentBoard[i][j];
+                if (value !== 0) {
+                    if (row.has(value)) {
+                        newErrors.add(`row-${i}`);
+                    }
+                    row.add(value);
+                }
+            }
+        }
+        // Check columns
+        for (let j = 0; j < boardSize; j++) {
+            const col = new Set<number>();
+            for (let i = 0; i < boardSize; i++) {
+                const value = currentBoard[i][j];
+                if (value !== 0) {
+                    if (col.has(value)) {
+                        newErrors.add(`col-${j}`);
+                    }
+                    col.add(value);
+                }
+            }
+        }
+        setErrors(newErrors);
+    }, [boardSize]);
+
     const handleKeyPress = useCallback((event: KeyboardEvent) => {
         if (!selectedCell) return;
         const [row, col] = selectedCell;
@@ -93,46 +140,12 @@ const SudokuBoard: React.FC = () => {
             setBoard(newBoard);
             validateBoard(newBoard);
         }
-    }, [selectedCell, board, initialBoard, boardSize]);
+    }, [selectedCell, board, initialBoard, boardSize, validateBoard]);
 
     useEffect(() => {
         window.addEventListener('keydown', handleKeyPress);
         return () => window.removeEventListener('keydown', handleKeyPress);
     }, [handleKeyPress]);
-
-    const validateBoard = (currentBoard: BoardType) => {
-        const newErrors = new Set<string>();
-        
-        // Check rows
-        for (let i = 0; i < boardSize; i++) {
-            const row = new Set<number>();
-            for (let j = 0; j < boardSize; j++) {
-                const value = currentBoard[i][j];
-                if (value !== 0) {
-                    if (row.has(value)) {
-                        newErrors.add(`row-${i}`);
-                    }
-                    row.add(value);
-                }
-            }
-        }
-
-        // Check columns
-        for (let j = 0; j < boardSize; j++) {
-            const col = new Set<number>();
-            for (let i = 0; i < boardSize; i++) {
-                const value = currentBoard[i][j];
-                if (value !== 0) {
-                    if (col.has(value)) {
-                        newErrors.add(`col-${j}`);
-                    }
-                    col.add(value);
-                }
-            }
-        }
-
-        setErrors(newErrors);
-    };
 
     const formatTime = (seconds: number): string => {
         const mins = Math.floor(seconds / 60);
@@ -189,10 +202,28 @@ const SudokuBoard: React.FC = () => {
                     </select>
                 </div>
                 <div className="control-group">
-                    <button onClick={startNewGame}>New Game</button>
-                    <button onClick={() => setShowHints(!showHints)}>
-                        {showHints ? 'Hide Hints' : 'Show Hints'}
+                    <button
+                        onClick={() => setShowHints(!showHints)}
+                        style={{
+                            background: showHints ? '#FFF9C4' : '#EEEEEE',
+                            border: 'none',
+                            borderRadius: '4px',
+                            padding: '0.5em',
+                            height: '2.2em',
+                            width: '30px',
+                            marginLeft: '0.5em',
+                            cursor: 'pointer',
+                            transition: 'background 0.2s',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.5em',
+                        }}
+                        aria-label={showHints ? 'Hide Hints' : 'Show Hints'}
+                        title={showHints ? 'Hide Hints' : 'Show Hints'}
+                    >
+                        <LightBulbIcon on={showHints} />
                     </button>
+                    <button onClick={startNewGame} title="Start new game">New</button>
                     <div className="timer">{formatTime(timer)}</div>
                 </div>
             </div>

@@ -110,93 +110,18 @@ const fillBoard = (board: SudokuBoard): boolean => {
     return false;
 };
 
-// Get strategy set based on difficulty
-const getStrategySet = (difficulty: Difficulty): Set<Strategy> => {
-    if (difficulty === 'easy') {
-        return new Set<Strategy>(['Naked Single']);
-    } else if (difficulty === 'medium') {
-        return new Set<Strategy>(['Naked Single', 'Backtracking']);
-    } else { // 'hard'
-        return new Set<Strategy>(['Naked Single', 'Backtracking', 'Advanced']);
-    }
-};
-
 // Get target number of cells to remove based on difficulty
-const getTargetCellsToRemove = (size: number, difficulty: Difficulty): number => {
-    const totalCells = size * size;
-    switch (difficulty) {
-        case 'easy':
-            return Math.floor(totalCells * 0.4); // 40% of cells
-        case 'medium':
-            return Math.floor(totalCells * 0.6); // 60% of cells
-        case 'hard':
-            return Math.floor(totalCells * 0.75); // 75% of cells
-    }
-};
-
-// Remove numbers strategically based on difficulty
-const removeNumbersStrategically = (
-    fullBoard: SudokuBoard, 
-    targetStrategies: Set<Strategy>,
-    difficulty: Difficulty,
-    maxAttempts = 60
-): SudokuBoard => {
-    const puzzle = boardCopy(fullBoard);
-    const size = fullBoard.length;
-    const targetCellsToRemove = getTargetCellsToRemove(size, difficulty);
-    
-    // Create a list of all cells
-    const cells: [number, number][] = [];
-    for (let i = 0; i < size; i++) {
-        for (let j = 0; j < size; j++) {
-            cells.push([i, j]);
-        }
-    }
-    
-    // Shuffle cells for randomness
-    shuffleArray(cells);
-    
-    let removedCells = 0;
-    let attempts = 0;
-    const maxAttemptsPerCell = 3; // Limit attempts per cell to prevent infinite loops
-    
-    while (removedCells < targetCellsToRemove && cells.length > 0 && attempts < maxAttempts) {
-        const [row, col] = cells.pop()!;
-        const backup = puzzle[row][col];
-        puzzle[row][col] = 0;
-        
-        const strategiesUsed = new Set<Strategy>();
-        const puzzleCopy = boardCopy(puzzle);
-        
-        let cellAttempts = 0;
-        let canRemove = false;
-        
-        while (cellAttempts < maxAttemptsPerCell) {
-            if (solveWithStrategies(puzzleCopy, strategiesUsed)) {
-                // Check if strategies used are within target strategies
-                const isWithinTargets = Array.from(strategiesUsed).every(
-                    strategy => targetStrategies.has(strategy)
-                );
-                
-                if (isWithinTargets) {
-                    canRemove = true;
-                    break;
-                }
-            }
-            cellAttempts++;
-        }
-        
-        if (!canRemove) {
-            puzzle[row][col] = backup;
-        } else {
-            removedCells++;
-        }
-        
-        attempts++;
-    }
-    
-    return puzzle;
-};
+// const getTargetCellsToRemove = (size: number, difficulty: Difficulty): number => {
+//     const totalCells = size * size;
+//     switch (difficulty) {
+//         case 'easy':
+//             return Math.floor(totalCells * 0.4); // 40% of cells
+//         case 'medium':
+//             return Math.floor(totalCells * 0.6); // 60% of cells
+//         case 'hard':
+//             return Math.floor(totalCells * 0.75); // 75% of cells
+//     }
+// };
 
 // Shuffle array in place
 const shuffleArray = <T>(array: T[]): void => {
