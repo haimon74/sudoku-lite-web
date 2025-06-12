@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { SudokuBoard as BoardType, generateBoard, removeNumbers, boardCopy } from '../utils/sudoku';
 import { BoardSize, GameVariant, getHebrewChars, getHebrewChar } from '../utils/hebrewChars';
-import './SudokuBoard.css';
+import styles from './SudokuBoard.module.css';
 
 type Difficulty = 'easy' | 'medium' | 'hard';
 
@@ -15,14 +15,24 @@ interface CellProps {
     onClick: () => void;
 }
 
+// Utility for combining class names
+function cn(...args: (string | false | undefined)[]) {
+    return args.filter(Boolean).join(' ');
+}
+
 const Cell: React.FC<CellProps> = ({ value, isInitial, isSelected, isHighlighted, isError, variant, onClick }) => {
     const hebrewChar = getHebrewChar(value, variant);
-    const cellClass = `cell ${isInitial ? 'initial' : ''} ${isSelected ? 'selected' : ''} ${isHighlighted ? 'highlighted' : ''} ${isError ? 'error' : ''}`;
-    
+    const cellClass = cn(
+        styles.cell,
+        isInitial && styles.initial,
+        isSelected && styles.selected,
+        isHighlighted && styles.highlighted,
+        isError && styles.error
+    );
     return (
         <div className={cellClass} onClick={onClick}>
             {value !== 0 && (
-                <span style={{ color: hebrewChar.color }}>
+                <span className={styles.cellSpan} style={{ color: hebrewChar.color }}>
                     {hebrewChar.char}
                 </span>
             )}
@@ -164,16 +174,16 @@ const SudokuBoard: React.FC = () => {
     };
 
     return (
-        <div className="sudoku-container">
-            <div className="controls">
-                <div className="control-group">
+        <div className={styles.sudokuContainer}>
+            <div className={styles.controls}>
+                <div className={styles.controlGroup}>
                     <select 
                         value={boardSize} 
                         onChange={(e) => {
                             setBoardSize(Number(e.target.value) as BoardSize);
                             setIsRunning(false);
                         }}
-                        className="control-select"
+                        className={styles.controlSelect}
                     >
                         {[4, 5, 6, 7, 8, 9].map(size => (
                             <option key={size} value={size}>{size}x{size}</option>
@@ -182,7 +192,7 @@ const SudokuBoard: React.FC = () => {
                     <select 
                         value={gameVariant} 
                         onChange={(e) => setGameVariant(e.target.value as GameVariant)}
-                        className="control-select"
+                        className={styles.controlSelect}
                     >
                         <option value="chinese">Chinese Numbers</option>
                         <option value="alphabet">Holly Alphabet</option>
@@ -194,7 +204,7 @@ const SudokuBoard: React.FC = () => {
                             setDifficulty(e.target.value as Difficulty);
                             setIsRunning(false);
                         }}
-                        className="control-select"
+                        className={styles.controlSelect}
                     >
                         <option value="easy">Easy</option>
                         <option value="medium">Medium</option>
@@ -203,35 +213,37 @@ const SudokuBoard: React.FC = () => {
                 
                     <button
                         onClick={() => setShowHints(!showHints)}
+                        className={styles.controlGroupButton}
                         style={{
                             background: showHints ? '#FFF9C4' : '#EEEEEE',
-                            border: 'none',
-                            borderRadius: '4px',
-                            padding: '0.5em',
                             height: '2.2em',
                             width: '30px',
                             marginLeft: '0.5em',
-                            cursor: 'pointer',
-                            transition: 'background 0.2s',
                             display: 'flex',
                             alignItems: 'center',
                             gap: '0.5em',
+                            transition: 'background 0.2s',
+                            border: 'none',
+                            borderRadius: '4px',
+                            cursor: 'pointer',
+                            padding: '0.5em',
                         }}
                         aria-label={showHints ? 'Hide Hints' : 'Show Hints'}
                         title={showHints ? 'Hide Hints' : 'Show Hints'}
                     >
                         <LightBulbIcon on={showHints} />
                     </button>
-                    <button onClick={startNewGame} title="Start new game">New</button>
-                    <div className="timer">{formatTime(timer)}</div>
+                    <button onClick={startNewGame} title="Start new game" className={styles.controlGroupButton}>New</button>
+                    <div className={styles.timer}>{formatTime(timer)}</div>
                 </div>
             </div>
             <div 
-                className="board" 
+                className={styles.board} 
                 style={{
                     gridTemplateColumns: `repeat(${boardSize}, 1fr)`,
                     gridTemplateRows: `repeat(${boardSize}, 1fr)`
                 }}
+                data-cols={boardSize}
             >
                 {board.map((row, i) => (
                     row.map((cell, j) => (
@@ -249,8 +261,9 @@ const SudokuBoard: React.FC = () => {
                 ))}
             </div>
             <div 
-                className="number-pad" 
+                className={styles.numberPad} 
                 style={{ gridTemplateColumns: `repeat(${boardSize}, 1fr)` }}
+                data-cols={boardSize}
             >
                 {getHebrewChars(boardSize, gameVariant).map((hebrewChar) => (
                     <button 
@@ -266,7 +279,7 @@ const SudokuBoard: React.FC = () => {
                                 }
                             }
                         }}
-                        className="number-button"
+                        className={styles.numberButton}
                         style={{ color: hebrewChar.color }}
                     >
                         {hebrewChar.char}

@@ -1,4 +1,5 @@
-.sudoku-container {
+/* Converted from SudokuBoard.css to CSS module */
+.sudokuContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -19,7 +20,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.control-group {
+.controlGroup {
     display: flex;
     gap: 1rem;
     align-items: center;
@@ -27,29 +28,28 @@
     flex-wrap: wrap;
 }
 
-.control-select {
+.controlSelect {
     padding: 0.5rem 1rem;
     border: 1px solid #ccc;
     border-radius: 4px;
     background-color: white;
     font-size: 1rem;
-    /* min-width: 120px; */
     cursor: pointer;
     transition: all 0.2s;
 }
 
-.control-select:hover {
+.controlSelect:hover {
     border-color: #4a90e2;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.control-select:focus {
+.controlSelect:focus {
     outline: none;
     border-color: #4a90e2;
     box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
 }
 
-.control-group button {
+.controlGroupButton {
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 4px;
@@ -61,7 +61,7 @@
     min-width: 60px;
 }
 
-.control-group button:hover {
+.controlGroupButton:hover {
     background-color: #357abd;
 }
 
@@ -95,7 +95,7 @@
     font-weight: bold;
 }
 
-.cell span {
+.cellSpan {
     position: relative;
     top: -0.05em;
     line-height: 1;
@@ -112,145 +112,31 @@
     background-color: #f0f0f0;
 }
 
-.cell.selected {
+.selected {
     background-color: #e3f2fd;
 }
 
-.cell.highlighted {
+.highlighted {
     background-color: #f5f5f5;
 }
 
-.cell.initial {
+.initial {
     font-weight: bold;
     color: #333;
-}
-
-.cell.error {
-    color: #d32f2f;
-}
-
-/* Responsive adjustments */
-@media (max-width: 600px) {
-    .sudoku-container {
-        padding: 0.5rem;
-    }
-
-    .controls {
-        padding: 0.5rem;
-    }
-
-    .control-group {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .control-select,
-    .control-group button {
-        width: 100%;
-        min-width: unset;
-    }
-
-    .cell {
-        width: 70px;
-        height: 70px;
-        font-size: 48px;
-    }
-
-    .timer {
-        font-size: 1.2rem;
-        min-width: unset;
-    }
-}
-
-/* Adjust cell sizes for different board sizes */
-.board[style*="grid-template-columns: repeat(4"] .cell {
-    width: 100px;
-    height: 100px;
-    font-size: 64px;
-}
-
-.board[style*="grid-template-columns: repeat(5"] .cell {
-    width: 90px;
-    height: 90px;
-    font-size: 56px;
-}
-
-.board[style*="grid-template-columns: repeat(6"] .cell {
-    width: 80px;
-    height: 80px;
-    font-size: 48px;
-}
-
-.board[style*="grid-template-columns: repeat(7"] .cell {
-    width: 70px;
-    height: 70px;
-    font-size: 42px;
-}
-
-.board[style*="grid-template-columns: repeat(8"] .cell {
-    width: 65px;
-    height: 65px;
-    font-size: 38px;
-}
-
-.board[style*="grid-template-columns: repeat(9"] .cell {
-    width: 60px;
-    height: 60px;
-    font-size: 34px;
-}
-
-/* Mobile adjustments for different board sizes */
-@media (max-width: 600px) {
-    .board[style*="grid-template-columns: repeat(4"] .cell {
-        width: 70px;
-        height: 70px;
-        font-size: 48px;
-    }
-
-    .board[style*="grid-template-columns: repeat(5"] .cell {
-        width: 60px;
-        height: 60px;
-        font-size: 42px;
-    }
-
-    .board[style*="grid-template-columns: repeat(6"] .cell {
-        width: 50px;
-        height: 50px;
-        font-size: 36px;
-    }
-
-    .board[style*="grid-template-columns: repeat(7"] .cell {
-        width: 45px;
-        height: 45px;
-        font-size: 32px;
-    }
-
-    .board[style*="grid-template-columns: repeat(8"] .cell {
-        width: 40px;
-        height: 40px;
-        font-size: 28px;
-    }
-
-    .board[style*="grid-template-columns: repeat(9"] .cell {
-        width: 38px;
-        height: 38px;
-        font-size: 26px;
-    }
-}
-
-/* Initial numbers */
-.cell.initial {
     background-color: #e0e0e0;
     font-weight: 600;
 }
 
-/* Superscript mode */
-.cell.superscript {
+.error {
+    color: #d32f2f;
+}
+
+.superscript {
     font-size: 20px;
     padding-top: 12px;
 }
 
-.cell.superscript::before {
+.superscript::before {
     content: attr(data-value);
     position: absolute;
     top: 4px;
@@ -260,13 +146,11 @@
     line-height: 1;
 }
 
-/* Wrong cells */
-.cell.wrong {
+.wrong {
     background-color: #ffebee;
 }
 
-/* Number pad */
-.number-pad {
+.numberPad {
     display: grid;
     gap: 0.5rem;
     padding: 1rem;
@@ -275,7 +159,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.number-button {
+.numberButton {
     width: 100%;
     aspect-ratio: 1;
     border: none;
@@ -290,82 +174,158 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.number-button:hover {
+.numberButton:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.number-button:active {
+.numberButton:active {
     transform: translateY(0);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Responsive adjustments for number pad */
+/* Responsive adjustments */
 @media (max-width: 600px) {
-    .number-pad {
-        gap: 0.25rem;
+    .sudokuContainer {
         padding: 0.5rem;
     }
+    .controls {
+        padding: 0.5rem;
+    }
+    .controlGroup {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .controlSelect,
+    .controlGroupButton {
+        width: 100%;
+        min-width: unset;
+    }
+    .cell {
+        width: 70px;
+        height: 70px;
+        font-size: 48px;
+    }
+    .timer {
+        font-size: 1.2rem;
+        min-width: unset;
+    }
+}
 
-    .number-button {
-        font-size: 1.5rem;
+/* Adjust cell sizes for different board sizes */
+.board[data-cols="4"] .cell {
+    width: 100px;
+    height: 100px;
+    font-size: 64px;
+}
+.board[data-cols="5"] .cell {
+    width: 90px;
+    height: 90px;
+    font-size: 56px;
+}
+.board[data-cols="6"] .cell {
+    width: 80px;
+    height: 80px;
+    font-size: 48px;
+}
+.board[data-cols="7"] .cell {
+    width: 70px;
+    height: 70px;
+    font-size: 42px;
+}
+.board[data-cols="8"] .cell {
+    width: 65px;
+    height: 65px;
+    font-size: 38px;
+}
+.board[data-cols="9"] .cell {
+    width: 60px;
+    height: 60px;
+    font-size: 34px;
+}
+
+@media (max-width: 600px) {
+    .board[data-cols="4"] .cell {
+        width: 70px;
+        height: 70px;
+        font-size: 48px;
+    }
+    .board[data-cols="5"] .cell {
+        width: 60px;
+        height: 60px;
+        font-size: 42px;
+    }
+    .board[data-cols="6"] .cell {
+        width: 50px;
+        height: 50px;
+        font-size: 36px;
+    }
+    .board[data-cols="7"] .cell {
+        width: 45px;
+        height: 45px;
+        font-size: 32px;
+    }
+    .board[data-cols="8"] .cell {
+        width: 40px;
+        height: 40px;
+        font-size: 28px;
+    }
+    .board[data-cols="9"] .cell {
+        width: 38px;
+        height: 38px;
+        font-size: 26px;
     }
 }
 
 /* Adjust number pad button sizes for different board sizes */
-.number-pad[style*="grid-template-columns: repeat(4"] .number-button {
+.numberPad[data-cols="4"] .numberButton {
     font-size: 2.5rem;
 }
-
-.number-pad[style*="grid-template-columns: repeat(5"] .number-button {
+.numberPad[data-cols="5"] .numberButton {
     font-size: 2.2rem;
 }
-
-.number-pad[style*="grid-template-columns: repeat(6"] .number-button {
+.numberPad[data-cols="6"] .numberButton {
     font-size: 2rem;
 }
-
-.number-pad[style*="grid-template-columns: repeat(7"] .number-button {
+.numberPad[data-cols="7"] .numberButton {
     font-size: 1.8rem;
 }
-
-.number-pad[style*="grid-template-columns: repeat(8"] .number-button {
+.numberPad[data-cols="8"] .numberButton {
     font-size: 1.6rem;
 }
-
-.number-pad[style*="grid-template-columns: repeat(9"] .number-button {
+.numberPad[data-cols="9"] .numberButton {
     font-size: 1.4rem;
 }
 
-/* Mobile adjustments for different board sizes */
 @media (max-width: 600px) {
-    .number-pad[style*="grid-template-columns: repeat(4"] .number-button {
-        font-size: 2rem;
+    .numberPad {
+        gap: 0.25rem;
+        padding: 0.5rem;
     }
-
-    .number-pad[style*="grid-template-columns: repeat(5"] .number-button {
-        font-size: 1.8rem;
-    }
-
-    .number-pad[style*="grid-template-columns: repeat(6"] .number-button {
+    .numberButton {
         font-size: 1.5rem;
     }
-
-    .number-pad[style*="grid-template-columns: repeat(7"] .number-button {
+    .numberPad[data-cols="4"] .numberButton {
+        font-size: 2rem;
+    }
+    .numberPad[data-cols="5"] .numberButton {
+        font-size: 1.8rem;
+    }
+    .numberPad[data-cols="6"] .numberButton {
+        font-size: 1.5rem;
+    }
+    .numberPad[data-cols="7"] .numberButton {
         font-size: 1.3rem;
     }
-
-    .number-pad[style*="grid-template-columns: repeat(8"] .number-button {
+    .numberPad[data-cols="8"] .numberButton {
         font-size: 1.2rem;
     }
-
-    .number-pad[style*="grid-template-columns: repeat(9"] .number-button {
+    .numberPad[data-cols="9"] .numberButton {
         font-size: 1.1rem;
     }
 }
 
-/* Game over modal */
-.game-over {
+.gameOver {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -378,13 +338,13 @@
     z-index: 1000;
 }
 
-.game-over h2 {
+.gameOverTitle {
     color: #4CAF50;
     margin-bottom: 20px;
     font-size: 24px;
 }
 
-.game-over button {
+.gameOverButton {
     padding: 12px 24px;
     font-size: 18px;
     background-color: #4CAF50;
@@ -395,21 +355,20 @@
     transition: all 0.3s;
 }
 
-.game-over button:hover {
+.gameOverButton:hover {
     background-color: #45a049;
     transform: translateY(-1px);
 }
 
-/* Hint button */
-.hint-button {
+.hintButton {
     background-color: #ff9800 !important;
 }
 
-.hint-button:hover {
+.hintButton:hover {
     background-color: #f57c00 !important;
 }
 
-.hint-button.active {
+.hintButtonActive {
     background-color: #f57c00 !important;
     box-shadow: inset 0 0 0 2px #fff;
 } 
